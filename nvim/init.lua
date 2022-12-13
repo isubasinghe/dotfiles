@@ -10,6 +10,11 @@ vim.opt.background='dark'
 vim.opt.mouse = 'a'
 vim.opt.completeopt='menuone,noselect'
 
+require('packer').init {
+  git = {
+    clone_timeout = 1024,
+  },
+}
 
 local use = require('packer').use
 
@@ -90,6 +95,7 @@ require('packer').startup(function()
   use 'Julian/lean.nvim'
   use {'ShinKage/idris2-nvim', requires = {'neovim/nvim-lspconfig', 'MunifTanjim/nui.nvim'}}
   use 'arkav/lualine-lsp-progress'
+  use { 'kartikp10/noctis.nvim', requires = { 'rktjmp/lush.nvim' } }
 end)
 
 
@@ -225,7 +231,7 @@ cmp.setup({
 
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 local servers = {'ocamllsp', 'ccls', 'tsserver', 'pyright', 'hls', 'texlab', 'gopls', 'terraformls', 'zls'}
 

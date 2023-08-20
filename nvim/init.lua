@@ -70,7 +70,6 @@ require('packer').startup(function()
     'nvim-lualine/lualine.nvim',
     requires = {'kyazdani42/nvim-web-devicons', opt = true}
   }
-  use "rebelot/kanagawa.nvim"
   use "lukas-reineke/indent-blankline.nvim"
   use "APZelos/blamer.nvim"
   use 'junegunn/fzf'
@@ -96,8 +95,52 @@ require('packer').startup(function()
   use {'ShinKage/idris2-nvim', requires = {'neovim/nvim-lspconfig', 'MunifTanjim/nui.nvim'}}
   use 'arkav/lualine-lsp-progress'
   use { 'kartikp10/noctis.nvim', requires = { 'rktjmp/lush.nvim' } }
+  use {
+  'nvim-telescope/telescope.nvim', tag = '0.1.2',
+-- or                            , branch = '0.1.x',
+  requires = { {'nvim-lua/plenary.nvim'} }
+  }
+  use {
+    'mrcjkb/haskell-tools.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim',
+    },
+    branch = '1.x.x', -- recommended
+  }
+  use 'MrcJkb/telescope-manix'
 end)
 
+local telescope = require('telescope')
+telescope.setup{
+  defaults = {
+    -- Default configuration for telescope goes here:
+    -- config_key = value,
+    mappings = {
+      i = {
+        -- map actions.which_key to <C-h> (default: <C-/>)
+        -- actions.which_key shows the mappings for your picker,
+        -- e.g. git_{create, delete, ...}_branch for the git_branches picker
+        ["<C-h>"] = "which_key"
+      }
+    }
+  },
+  pickers = {
+    -- Default configuration for builtin pickers goes here:
+    -- picker_name = {
+    --   picker_config_key = value,
+    --   ...
+    -- }
+    -- Now the picker_config_key will be applied every time you call this
+    -- builtin picker
+  },
+  extensions = {
+    -- Your extension configuration goes here:
+    -- extension_name = {
+    --   extension_config_key = value,
+    -- }
+    -- please take a look at the readme of the extension you want to configure
+  }
+}
 
 
 -- Disable virtual_text since it's redundant due to lsp_lines.
@@ -120,21 +163,6 @@ require'lualine'.setup{
 }
 
 
-require('kanagawa').setup({
-    undercurl = true,           -- enable undercurls
-    commentStyle = {italic = true } ,
-    functionStyle = {italic = true },
-    keywordStyle = {italic = true } ,
-    statementStyle = { bold = true},
-    typeStyle = {},
-    variablebuiltinStyle = {italic = true },
-    specialReturn = true,       -- special highlight for the return keyword
-    specialException = true,    -- special highlight for exception handling keywords 
-    transparent = false,        -- do not set background color
-    dimInactive = false,        -- dim inactive window `:h hl-NormalNC`
-    colors = {},
-    overrides = {},
-})
 
 -- Lua
 -- vim.cmd[[colorscheme boo]]
@@ -233,7 +261,7 @@ cmp.setup({
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-local servers = {'ocamllsp', 'ccls', 'tsserver', 'pyright', 'hls', 'texlab', 'gopls', 'terraformls', 'zls'}
+local servers = {'ocamllsp', 'ccls', 'tsserver', 'pyright', 'texlab', 'gopls', 'terraformls', 'zls', 'verible'}
 
 for _,lsp in ipairs(servers) do 
   nvim_lsp[lsp].setup {
@@ -300,7 +328,6 @@ require'nvim-treesitter.configs'.setup {
     },
   },
 }
-
 
 
 require('leap').set_default_keymaps()

@@ -61,7 +61,8 @@ require('packer').startup(function()
     } end
   }
   use 'lervag/vimtex'
-  use 'neovimhaskell/haskell-vim'
+  use 'neovimhaskell/nvim-hs.vim'
+  use 'kana/vim-textobj-user'
   use 'andy-morris/happy.vim'
   use 'andy-morris/alex.vim'
   use 'neomake/neomake'
@@ -96,51 +97,14 @@ require('packer').startup(function()
   use 'arkav/lualine-lsp-progress'
   use { 'kartikp10/noctis.nvim', requires = { 'rktjmp/lush.nvim' } }
   use {
-  'nvim-telescope/telescope.nvim', tag = '0.1.2',
--- or                            , branch = '0.1.x',
-  requires = { {'nvim-lua/plenary.nvim'} }
-  }
-  use {
     'mrcjkb/haskell-tools.nvim',
     requires = {
       'nvim-lua/plenary.nvim',
     },
     branch = '1.x.x', -- recommended
   }
-  use 'MrcJkb/telescope-manix'
+  use { 'isovector/cornelis', run='stack build' }
 end)
-
-local telescope = require('telescope')
-telescope.setup{
-  defaults = {
-    -- Default configuration for telescope goes here:
-    -- config_key = value,
-    mappings = {
-      i = {
-        -- map actions.which_key to <C-h> (default: <C-/>)
-        -- actions.which_key shows the mappings for your picker,
-        -- e.g. git_{create, delete, ...}_branch for the git_branches picker
-        ["<C-h>"] = "which_key"
-      }
-    }
-  },
-  pickers = {
-    -- Default configuration for builtin pickers goes here:
-    -- picker_name = {
-    --   picker_config_key = value,
-    --   ...
-    -- }
-    -- Now the picker_config_key will be applied every time you call this
-    -- builtin picker
-  },
-  extensions = {
-    -- Your extension configuration goes here:
-    -- extension_name = {
-    --   extension_config_key = value,
-    -- }
-    -- please take a look at the readme of the extension you want to configure
-  }
-}
 
 
 -- Disable virtual_text since it's redundant due to lsp_lines.
@@ -357,8 +321,6 @@ vim.g.vimtex_quickfix_mode=0
 vim.api.nvim_command('set conceallevel=2')
 vim.g.tex_conceal='abdmg'
 
---NvimTree
-vim.api.nvim_command([[autocmd VimEnter * NvimTreeOpen]])
 
 vim.api.nvim_set_keymap('', '<space>ff', ':NvimTreeToggle<cr>', { silent = true, noremap = true })
 vim.api.nvim_set_keymap('', '<space>gg', ':Neogit<cr>', { silent = true, noremap = true })
